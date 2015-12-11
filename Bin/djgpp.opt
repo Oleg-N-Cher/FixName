@@ -1,0 +1,1 @@
+-Zpe -Zcon -D_WIN32 -O1 -s -I "." -I ..\Lib -I ..\C -I ..\..\XDev\WinDev\Lib\C -I ..\..\XDev\WinDev\Lib\Obj -I ..\..\XDev\WinDev\Bin\djgpp\include\win32 ..\..\XDev\WinDev\Lib\XDevDJGPP.a ..\..\XDev\WinDev\Lib\KolDJGPP.a ..\..\XDev\WinDev\Bin\djgpp\lib\libmsvcrt.a
