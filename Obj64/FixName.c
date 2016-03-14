@@ -73,8 +73,8 @@ export main(int argc, char **argv)
 	__IMPORT(LibC__init);
 	__REGMAIN("FixName", 0);
 /* BEGIN */
-	Console_WriteStrLn((CHAR*)"FixName v1.0 - a tool to fix UTF-8 & Hex file names", (LONGINT)52);
-	Console_WriteStrLn((CHAR*)"(c) VEDAsoft Oberon Club \'15 - http://zx.oberon2.ru", (LONGINT)52);
+	Console_WriteStrLn((CHAR*)"FixName v1.01 - a tool to fix UTF-8 & Hex file names", (LONGINT)53);
+	Console_WriteStrLn((CHAR*)"(c) 2016 VEDAsoft Oberon Club - http://zx.oberon2.ru", (LONGINT)53);
 	Console_WriteLn();
 	if (CmdLine_ParamCount != 1) {
 		Console_WriteStrLn((CHAR*)"  Usage: FixName pathname", (LONGINT)26);
@@ -89,7 +89,13 @@ export main(int argc, char **argv)
 		}
 	}
 	Ignore_Bool(KolFiles_ExtractFileName((void*)FixName_pathname, 1024, (void*)FixName_oldname, 1024));
-	if (Strings_Utf8ToWin1251((void*)FixName_oldname, 1024, (void*)FixName_newname, 1024) && __STRCMP(FixName_oldname, FixName_newname) != 0 || FixName_ReplaceHex((void*)FixName_oldname, 1024, (void*)FixName_newname, 1024) && __STRCMP(FixName_oldname, FixName_newname) != 0) {
+	if (!FixName_ReplaceHex((void*)FixName_oldname, 1024, (void*)FixName_newname, 1024)) {
+		__MOVE(FixName_oldname, FixName_newname, 1024);
+	}
+	if (Strings_Utf8ToWin1251((void*)FixName_newname, 1024, (void*)FixName_pathname, 1024)) {
+		__MOVE(FixName_pathname, FixName_newname, 1024);
+	}
+	if (__STRCMP(FixName_oldname, FixName_newname) != 0) {
 		if (Files_RenameFile((void*)FixName_oldname, 1024, (void*)FixName_newname, 1024)) {
 			__HALT(0);
 		}

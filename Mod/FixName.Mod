@@ -35,8 +35,9 @@ BEGIN
 END ReplaceHex;
 
 BEGIN
-  IO.WriteStrLn("FixName v1.0 - a tool to fix UTF-8 & Hex file names");
-  IO.WriteStrLn("(c) VEDAsoft Oberon Club '15 - http://zx.oberon2.ru"); IO.WriteLn;
+  IO.WriteStrLn("FixName v1.01 - a tool to fix UTF-8 & Hex file names");
+  IO.WriteStrLn("(c) 2016 VEDAsoft Oberon Club - http://zx.oberon2.ru");
+  IO.WriteLn;
   IF CmdLine.ParamCount # 1 THEN
     IO.WriteStrLn("  Usage: FixName pathname");
     IO.WriteStrLn('         FixName "path name with spaces"');
@@ -49,9 +50,9 @@ BEGIN
     END;
   END;
   Ignore.Bool( KolFiles.ExtractFileName(pathname, oldname) );
-  IF (Convert.Utf8ToWin1251(oldname, newname) & (oldname # newname)) OR
-    (ReplaceHex(oldname, newname) & (oldname # newname))
-  THEN
+  IF ~ ReplaceHex(oldname, newname) THEN newname := oldname END;
+  IF Convert.Utf8ToWin1251(newname, pathname) THEN newname := pathname END;
+  IF oldname # newname THEN
     IF Files.RenameFile(oldname, newname) THEN HALT(0) END;
     IO.WriteStrLn("Couldn't rename"); HALT(1)
   ELSE
